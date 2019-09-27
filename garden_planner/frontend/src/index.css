@@ -1,0 +1,116 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+#gridContainer {
+  position: relative;
+  overflow: hidden;
+  border: 12px solid #6D5720;
+  border-radius: 12px;
+  margin: auto;
+}
+
+#grid {
+  display: grid;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #6D5720;
+}
+
+.plot {
+  width: 100%;
+  height: 100%;
+  background-color: #836B32;
+  background-size: contain;
+  cursor: pointer;
+  border: 3px solid #6D5720;
+}
+
+plot:focus {
+  outline: none;
+}
+
+.shovel {
+  background-image: url('./images/shovel.svg');
+  background-repeat: no-repeat;
+}
+
+/* <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> */
+.strawberry {
+  background-image: url('./images/strawberry.svg');
+  background-repeat: no-repeat;
+  background-size: 90%;
+  background-position: center center;
+  /* float: right; */
+}
+
+/* <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> */
+.carrot {
+  background-image: url('./images/carrot.svg');
+  background-repeat: no-repeat;
+  background-size: 90%;
+}
+
+/* <div>Icons made by <a href="https://www.flaticon.com/authors/wanicon" title="wanicon">wanicon</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/
+.peas {
+  background-image: url('./images/peas.svg');
+  background-repeat: no-repeat;
+}
+
+/* <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/
+.radish {
+  background-image: url('./images/radish.svg');
+  background-repeat: no-repeat;
+}
+
+/* <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/
+.spinach {
+  background-image: url('./images/spinach.svg');
+  background-repeat: no-repeat;
+}
+
+.cat {
+  background-image: url('./images/cat.svg');
+  background-repeat: no-repeat;
+  background-size: 90%;
+  background-position: center center;
+}
+
+/* .empty {
+  background-size: 90%;
+  background-position: center center;
+} */
+
+.bg-90pct-center {
+  background-size: 90%;
+  background-position: center center;
+}
+
+.bg-icon-right {
+  background-position: center right;
+  background-size: auto 24px;
+}
+
+.drop-down-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
