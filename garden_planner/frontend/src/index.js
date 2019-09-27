@@ -129,7 +129,7 @@ class View extends React.Component {
       unit = 'vh';
       squareSize = Math.floor(70 / this.state.numRows);
     }
-    squareSize = Math.max(squareSize, 15);
+    squareSize = Math.max(squareSize, 23);
     return {
       width: `${this.state.numCols * squareSize}${unit}`,
       height: `${this.state.numRows * squareSize}${unit}`,
@@ -154,6 +154,7 @@ class View extends React.Component {
         }
       }
     }
+    console.log('neighbors', neighbors);
     return neighbors.filter(Boolean);
   }
 
@@ -167,9 +168,6 @@ class View extends React.Component {
         plant={plot.plant}
         layout={plot.layout}
         onClick={() => { this.handleGridClick(row, col) }}
-        neighbors={this.neighbors(row, col)}
-        draggable
-        onDragOver={(e) => console.log(e)}
       />
     );
   }
@@ -253,13 +251,29 @@ class View extends React.Component {
   // }
 
 
+  neighborPlants(row, col) {
+    if (row === null || col === null) {
+      return [];
+    } else {
+      const xvals = [col - 1, col, col + 1].filter(x => x >= 0 && x < this.state.numCols);
+      const yvals = [row - 1, row, row + 1].filter(y => y >= 0 && y < this.state.numRows);
+      let neighbors = [];
+      for (let y of yvals) {
+        for (let x of xvals) {
+          if (!(y === row && x === col)) {
+            neighbors.push(this.state.grid[y][x].plant);
+          }
+        }
+      }
+      console.log('neighbors', neighbors.filter(Boolean));
+      return neighbors.filter(Boolean);
+    }
+  }
+
   handlePlantPickerSelection(plant, layout) {
     const gridCopy = this.state.grid.map(row => row.slice());
     const plot = gridCopy[this.clickedRow][this.clickedCol];
     Object.assign(plot, { plant: plant, layout: layout });
-    console.log('plot', plot);
-    console.log('layout', layout);
-    console.log('calc layout', plant.defaultLayout());
     this.clickedRow = null;
     this.clickedCol = null;
     this.setState({
@@ -268,34 +282,34 @@ class View extends React.Component {
     });
   }
 
-  renderPlantPicker() {
-    // let show = this.state.showPlantPicker;
-    // // let options = [];
-    // // ['strawberry', 'cat', 'carrot', 'peas', 'two'].forEach(item => {
-    // //   let fcn = () => this.handleSelectOption(item);
-    // //   options.push({value: item, fcn: fcn});
-    // // })
-    // const onClose = () => { this.setState({ showPlantPicker: false }) };
-    // let options = [];
-    // if (this.state.showPlantPicker) {
-    //   const currentItem = this.state.grid[this.clickedRow][this.clickedCol];
-    // }
-    return (
-      <PlantPicker
-        show={this.state.showPlantPicker}
-        handleSelect={(plant, layout) => { this.handlePlantPickerSelection(plant, layout) }}
-        handleHide={() => { this.setState({ showPlantPicker: false }) }}
-      />
-    );
-  }
+  // renderPlantPicker() {
+  //   return (
+  //     <PlantPicker
+  //       show={this.state.showPlantPicker}
+  //       handleSelect={(plant, layout) => { this.handlePlantPickerSelection(plant, layout) }}
+  //       handleHide={() => { this.setState({ showPlantPicker: false }) }}
+  //       neighborPlants={this.neighborPlants(this.clickedRow, this.clickedCol)}
+  //     />
+  //   );
+  // }
 
   render() {
     return (
-      <Container fluid className="mt-2">
-        {this.renderPlantPicker()}
-        <Card>
+      <Container fluid className="mt-2 p-1">
+        <PlantPicker
+          show={this.state.showPlantPicker}
+          handleSelect={(plant, layout) => { this.handlePlantPickerSelection(plant, layout) }}
+          handleHide={() => { this.setState({ showPlantPicker: false }) }}
+          neighborPlants={this.neighborPlants(this.clickedRow, this.clickedCol)}
+        />
+        <Card className="h-75">
           <Card.Header>{this.renderHeader()}</Card.Header>
-          <Card.Body className="align-content-center m-2 overflow-auto">{this.renderBody()}</Card.Body>
+          <Card.Body
+            className="align-content-center m-2 overflow-auto p-0"
+            style={ {maxHeight: '70vh', overflowY: 'auto'} }
+          >
+            {this.renderBody()}
+          </Card.Body>
         </Card>
       </Container>
     );

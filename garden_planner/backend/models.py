@@ -35,5 +35,8 @@ class Plant(models.Model):
     good_neighbors = models.ManyToManyField('self', blank=True)
     bad_neighbors = models.ManyToManyField('self', blank=True)
 
+    class Meta:
+        ordering = ['name']
+
     def __str__(self):
         return self.name

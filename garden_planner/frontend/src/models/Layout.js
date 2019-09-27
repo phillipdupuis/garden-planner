@@ -1,7 +1,7 @@
 const layoutObjects = [];
 
 
-class Layout {
+export default class Layout {
   constructor(resource) {
     this.id = resource.id;
     this.rows = resource.rows;
@@ -16,8 +16,17 @@ class Layout {
         width: '95%',
         height: '95%',
     };
-    this.allPoints = this.allPoints.bind(this);
-    this.cellFilledStates = this.cellFilledStates.bind(this);
+    // create an ordered list of [row, col] pairs for all the points in this layout.
+    let points = [];
+    for (let row = 0 ; row < resource.rows ; row++ ) {
+      for (let col = 0 ; col < resource.cols ; col++ ) {
+        points.push([row, col]);
+      }
+    }
+    this.allPoints = points;
+    // create a row-major ordered list of booleans indicating which points are filled
+    const filled = resource.fill.map(JSON.stringify);
+    this.cellFilledStates = points.map(p => (filled.includes(JSON.stringify(p))) ? true : false);
   }
 
   static getObject(id) {
@@ -39,21 +48,4 @@ class Layout {
         }
       });
   }
-
-  allPoints() {
-      let points = [];
-      for (let row = 0 ; row < this.rows ; row++ ) {
-          for (let col = 0 ; col < this.cols ; col++ ) {
-              points.push([row, col]);
-          }
-      }
-      return points;
-  }
-
-  cellFilledStates() {
-      const filled = this.fill.map(JSON.stringify);
-      return this.allPoints().map(JSON.stringify).map(point => (filled.includes(point)) ? true : false);
-  }
 }
-
-export default Layout;

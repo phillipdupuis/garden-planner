@@ -3,7 +3,7 @@ import Layout from './Layout';
 const plantObjects = [];
 
 
-class Plant {
+export default class Plant {
   constructor(resource) {
     this.id = resource.id;
     this.name = resource.name;
@@ -41,5 +41,3 @@ class Plant {
     return Layout.getObject(this.layoutIds[0]);
   }
 }
-
-export default Plant;
