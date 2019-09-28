@@ -45,15 +45,6 @@ class View extends React.Component {
     Layout.loadObjectsFromApi();
   }
 
-  // renderHeader() {
-  //   return (
-  //     <RowsControl
-  //       addRowFunction={() => { this.addRow() }}
-  //       addColFunction={() => { this.addCol() }}
-  //     />
-  //   );
-  // }
-
   renderUndo() {
     if (this.history.length === 0) {
       return <Button variant="outline-secondary" className="disabled" disabled><img src={undoIcon} /></Button>;
@@ -72,7 +63,6 @@ class View extends React.Component {
     });
   }
 
-
   renderHeader() {
     const buttonClass = "mr-0";
     return (
@@ -85,13 +75,6 @@ class View extends React.Component {
             Add Column
           </Button>
         </ButtonGroup>
-        {/* <ButtonGroup className="mx-2" aria-label="Undo and redo">
-          {this.renderUndo()}
-          <Button variant="outline-secondary" size="sm" className={buttonClass}>
-            <img src={redoIcon} />
-          </Button>
-        </ButtonGroup>
-        <Button variant="primary" size="sm" className="ml-auto">Save</Button> */}
       </ButtonToolbar>
     );
   }
@@ -143,21 +126,6 @@ class View extends React.Component {
     }
   }
 
-  neighbors(row, col) {
-    const xvals = [-1, 0, 1].map(v => v + col).filter(x => x >= 0 && x < this.state.numCols);
-    const yvals = [-1, 0, 1].map(v => v + row).filter(y => y >= 0 && y < this.state.numRows);
-    let neighbors = [];
-    for (let y of yvals) {
-      for (let x of xvals) {
-        if (!(y === row && x === col)) {
-          neighbors.push(this.state.grid[y][x]);
-        }
-      }
-    }
-    console.log('neighbors', neighbors);
-    return neighbors.filter(Boolean);
-  }
-
   renderSquare(row, col) {
     const id = `r${row}c${col}`
     const plot = this.state.grid[row][col];
@@ -181,17 +149,6 @@ class View extends React.Component {
     this.clickedCol = col;
     this.setState({ showPlantPicker: true });
   }
-
-  // handleSelectOption(value) {
-  //   let gridCopy = this.state.grid.map(row => row.slice());
-  //   gridCopy[this.clickedRow][this.clickedCol] = value;
-  //   this.clickedRow = null;
-  //   this.clickedCol = null;
-  //   this.setState({
-  //     grid: gridCopy,
-  //     showPlantPicker: false,
-  //   });
-  // }
 
   addRow() {
     // let gridCopy = this.state.grid.map(row => row.slice());
@@ -223,53 +180,6 @@ class View extends React.Component {
     })
   }
 
-  // plantPickerOptions() {
-  //   let options = [];
-  //   if (this.state.showPlantPicker) {
-  //     let currentItem = this.state.grid[this.clickedRow][this.clickedCol];
-  //     // ['carrot', 'peas', 'radish', 'spinach', 'strawberry', 'cat']
-  //     console.log('plants', plants())
-  //     plants().map(plant => plant.name.toLowerCase())
-  //       .filter(item => item !== currentItem)
-  //       .forEach(item => {
-  //         let fcn = () => this.handleSelectOption(item);
-  //         options.push({ value: item, fcn: fcn });
-  //       });
-  //   }
-  //   return options;
-  // }
-
-  // handleSelectOption(value) {
-  //   let gridCopy = this.state.grid.map(row => row.slice());
-  //   gridCopy[this.clickedRow][this.clickedCol] = value;
-  //   this.clickedRow = null;
-  //   this.clickedCol = null;
-  //   this.setState({
-  //     grid: gridCopy,
-  //     showPlantPicker: false,
-  //   });
-  // }
-
-
-  neighborPlants(row, col) {
-    if (row === null || col === null) {
-      return [];
-    } else {
-      const xvals = [col - 1, col, col + 1].filter(x => x >= 0 && x < this.state.numCols);
-      const yvals = [row - 1, row, row + 1].filter(y => y >= 0 && y < this.state.numRows);
-      let neighbors = [];
-      for (let y of yvals) {
-        for (let x of xvals) {
-          if (!(y === row && x === col)) {
-            neighbors.push(this.state.grid[y][x].plant);
-          }
-        }
-      }
-      console.log('neighbors', neighbors.filter(Boolean));
-      return neighbors.filter(Boolean);
-    }
-  }
-
   handlePlantPickerSelection(plant, layout) {
     const gridCopy = this.state.grid.map(row => row.slice());
     const plot = gridCopy[this.clickedRow][this.clickedCol];
@@ -282,31 +192,51 @@ class View extends React.Component {
     });
   }
 
-  // renderPlantPicker() {
-  //   return (
-  //     <PlantPicker
-  //       show={this.state.showPlantPicker}
-  //       handleSelect={(plant, layout) => { this.handlePlantPickerSelection(plant, layout) }}
-  //       handleHide={() => { this.setState({ showPlantPicker: false }) }}
-  //       neighborPlants={this.neighborPlants(this.clickedRow, this.clickedCol)}
-  //     />
-  //   );
-  // }
+  renderPlantPicker() {
+    if (this.state.showPlantPicker === false) {
+      return null;
+    } else {
+      // Determine what plants are adjacent to the selected plot...this influences the search results.
+      const plotRow = this.clickedRow;
+      const plotCol = this.clickedCol;
+      const validLoc = (row, col) => (
+        row >= 0
+        && row < this.state.numRows
+        && col >= 0
+        && col < this.state.numCols
+        && `${row}_${col}` !== `${plotRow}_${plotCol}`
+      );
+      const getPlantAtLoc = (row, col) => this.state.grid[row][col].plant;
+      const neighborPlants = [];
+      [plotRow - 1, plotRow, plotRow + 1].forEach(row => {
+        [plotCol - 1, plotCol, plotCol + 1].forEach(col => {
+          if (validLoc(row, col) && getPlantAtLoc(row, col)) {
+            neighborPlants.push(getPlantAtLoc(row, col));
+          }
+        });
+      });
+      const plantGroups = this.state.grid[plotRow][plotCol].plantPickerOptionGroups(neighborPlants);
+      return (
+        <PlantPicker
+          show={true}
+          handleSelect={(plant, layout) => { this.handlePlantPickerSelection(plant, layout) }}
+          handleHide={() => { this.setState({ showPlantPicker: false }) }}
+          plantGroups={plantGroups}
+          neighborPlants={neighborPlants}
+        />
+      );
+    }
+  }
 
   render() {
     return (
       <Container fluid className="mt-2 p-1">
-        <PlantPicker
-          show={this.state.showPlantPicker}
-          handleSelect={(plant, layout) => { this.handlePlantPickerSelection(plant, layout) }}
-          handleHide={() => { this.setState({ showPlantPicker: false }) }}
-          neighborPlants={this.neighborPlants(this.clickedRow, this.clickedCol)}
-        />
+        {this.renderPlantPicker()}
         <Card className="h-75">
           <Card.Header>{this.renderHeader()}</Card.Header>
           <Card.Body
             className="align-content-center m-2 overflow-auto p-0"
-            style={ {maxHeight: '70vh', overflowY: 'auto'} }
+            style={{ maxHeight: '70vh', overflowY: 'auto' }}
           >
             {this.renderBody()}
           </Card.Body>
@@ -314,39 +244,9 @@ class View extends React.Component {
       </Container>
     );
   }
-
-  // render() {
-  //   return (
-  //     <Container fluid className="flex-column m-2">
-  //       {this.renderPlantPicker()}
-  //       <Container className="align-content-center">
-  //         {this.renderHeader()}
-  //       </Container>
-  //       <Container className="align-content-center overflow-auto">
-  //         {this.renderBody()}
-  //       </Container>
-  //     </Container>
-  //   );
-  // }
-
-  // render() {
-  //   return (
-  //     <Container fluid className="mt-2 border">
-  //       {this.renderPlantPicker()}
-  //       <Row className="border-bottom bg-light p-2 w-100">
-  //         <Col>{this.renderHeader()}</Col>
-  //       </Row>
-  //       <Row className="align-content-center m-2 overflow-auto">
-  //         <Col>{this.renderBody()}</Col>
-  //       </Row>
-  //     </Container>
-  //   );
-  // }
-
 }
 
 export default View;
-
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
