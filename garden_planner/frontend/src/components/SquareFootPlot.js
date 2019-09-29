@@ -7,45 +7,47 @@ import Layout from '../models/Layout';
 
 
 const propTypes = {
-    id: PropTypes.string.isRequired,
-    plant: PropTypes.instanceOf(Plant),
-    layout: PropTypes.instanceOf(Layout),
-    onClick: PropTypes.func.isRequired
+  id: PropTypes.string.isRequired,
+  plant: PropTypes.instanceOf(Plant),
+  layout: PropTypes.instanceOf(Layout),
+  onClick: PropTypes.func.isRequired
 };
 
 class SquareFootPlot extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    renderCells() {
-        if (!(this.props.plant)) {
-            return '';
-        } else {
-            const filledClass = this.props.plant.className;
-            return (
-                this.props.layout.cellFilledStates
-                .map(filled => (filled) ? filledClass : '')
-                .map((className, idx) => {
-                    return <div className={`${className} bg-90pct-center`} key={idx}></div>;
-                })
-            );
-        }
+  renderPlants() {
+    if (!(this.props.plant)) {
+      return null;
+    } else {
+      return (
+        this.props.layout.cellFilledStates
+          .map((filled, i) => {
+            const cellClass = (filled) ? `${this.props.plant.className} bg-90pct-center` : 'bg-90pct-center';
+            return <div className={cellClass} key={i}></div>;
+          })
+      );
     }
+  }
 
-    render() {
-        return (
-            <button
-                className="plot"
-                id={this.props.id}
-                onClick={this.props.onClick}
-            >
-                <div style={(this.props.layout) ? this.props.layout.styles : {}}>
-                    {this.renderCells()}
-                </div>
-            </button>
-        );
-    }
+  render() {
+    return (
+      <button
+        className="plot"
+        id={this.props.id}
+        onClick={this.props.onClick}
+      >
+        <div
+          className="plants"
+          style={(this.props.layout) ? this.props.layout.styles : {}}
+        >
+          {this.renderPlants()}
+        </div>
+      </button>
+    );
+  }
 }
 
 SquareFootPlot.propTypes = propTypes;
