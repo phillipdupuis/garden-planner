@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Plant from '../models/Plant';
 import Layout from '../models/Layout';
+import plantImgSrc from '../images/plantImages';
 
 
 const propTypes = {
@@ -22,11 +23,17 @@ class SquareFootPlot extends React.Component {
     if (!(this.props.plant)) {
       return null;
     } else {
+      const imgSrc = plantImgSrc(this.props.plant.imageName);
       return (
         this.props.layout.cellFilledStates
           .map((filled, i) => {
-            const cellClass = (filled) ? `plant ${this.props.plant.className} bg-90pct-center` : 'bg-90pct-center';
-            return <div className={cellClass} key={i}></div>;
+            // const cellClass = (filled) ? `plant ${this.props.plant.className} bg-90pct-center` : 'bg-90pct-center';
+            // return <div className={cellClass} key={i}></div>;
+            if (filled) {
+              return <img src={imgSrc} className="plant" alt={this.props.plant.name} key={i}/>
+            } else {
+              return <div className="plant"></div>;
+            }
           })
       );
     }

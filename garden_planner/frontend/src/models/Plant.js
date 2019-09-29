@@ -13,7 +13,7 @@ export default class Plant {
     this.goodNeighborIds = resource.good_neighbors;
     this.badNeighborIds = resource.bad_neighbors;
     this.className = resource.name.toLowerCase().replace(/ /g, '-');
-    this.imageName = resource.name.toLowerCase().replace(/ /g, '-') + '.svg';
+    this.imageName = resource.name.toLowerCase().replace(/ /g, '-');
     this.defaultLayout = this.defaultLayout.bind(this);
   }
 
