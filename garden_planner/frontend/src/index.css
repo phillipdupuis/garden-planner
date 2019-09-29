@@ -133,6 +133,7 @@ plot:focus {
 
 .plants {
   z-index: 30;
+  position: relative;
 }
 
 .bg-icon-right {
