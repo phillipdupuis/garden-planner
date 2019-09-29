@@ -127,8 +127,15 @@ plot:focus {
 } */
 
 .bg-90pct-center {
-  background-size: 90%;
-  background-position: center center;
+  background-size: 90% 90%;
+  background-position-y: center;
+  background-position-x: center;
+}
+
+.bg-icon-right {
+  background-size: auto 24px;
+  background-position-y: center;
+  background-position-x: right;
 }
 
 .plants {
@@ -136,9 +143,11 @@ plot:focus {
   position: relative;
 }
 
-.bg-icon-right {
-  background-position: center right;
-  background-size: auto 24px;
+.plant {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .drop-down-button {

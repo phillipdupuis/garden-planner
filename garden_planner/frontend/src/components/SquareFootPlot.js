@@ -25,7 +25,7 @@ class SquareFootPlot extends React.Component {
       return (
         this.props.layout.cellFilledStates
           .map((filled, i) => {
-            const cellClass = (filled) ? `${this.props.plant.className} bg-90pct-center` : 'bg-90pct-center';
+            const cellClass = (filled) ? `plant ${this.props.plant.className} bg-90pct-center` : 'bg-90pct-center';
             return <div className={cellClass} key={i}></div>;
           })
       );
