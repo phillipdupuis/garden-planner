@@ -1,0 +1,17 @@
+#gridContainer {
+  position: relative;
+  overflow: hidden;
+  border: 12px solid #6D5720;
+  border-radius: 12px;
+  margin: auto;
+}
+
+#grid {
+  display: grid;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #6D5720;
+}

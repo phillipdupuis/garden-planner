@@ -15,7 +15,8 @@ import { Navbar, Nav, Form, FormControl } from 'react-bootstrap';
 import ListGroup from 'react-bootstrap/ListGroup';
 import SplitButton from 'react-bootstrap/SplitButton';
 import PlantPicker from './components/PlantPicker';
-import SquareFootPlot from './components/SquareFootPlot';
+import GardenGrid from './components/GardenGrid';
+import GardenControls from './components/GardenControls';
 import undoIcon from './images/undo.svg';
 import redoIcon from './images/redo.svg';
 import Header from './components/Header.js';
@@ -34,6 +35,7 @@ class View extends React.Component {
       showPlantPicker: false,
     };
     this.addRow = this.addRow.bind(this);
+    this.addCol = this.addCol.bind(this);
     this.handleGridClick = this.handleGridClick.bind(this);
     this.clickedRow = null;
     this.clickedCol = null;
@@ -63,83 +65,6 @@ class View extends React.Component {
     });
   }
 
-  renderHeader() {
-    const buttonClass = "mr-0";
-    return (
-      <ButtonToolbar aria-label="Controls">
-        <ButtonGroup className="mx-2" aria-label="Add rows and columns">
-          <Button variant="outline-success" size="sm" className={buttonClass} onClick={() => { this.addRow() }}>
-            Add Row
-          </Button>
-          <Button variant="outline-success" size="sm" className={buttonClass} onClick={() => { this.addCol() }}>
-            Add Column
-          </Button>
-        </ButtonGroup>
-      </ButtonToolbar>
-    );
-  }
-
-  renderBody() {
-    return (
-      <div>
-        <div id="gridContainer" style={this.gridContainerDynamicStyles()}>
-          <div id="grid" style={this.gridDynamicStyles()}>
-            {this.gridSquares()}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  gridSquares() {
-    let squares = [];
-    for (let row = 0; row < this.state.numRows; row++) {
-      for (let col = 0; col < this.state.numCols; col++) {
-        squares.push(this.renderSquare(row, col));
-      }
-    }
-    return squares;
-  }
-
-  gridContainerDynamicStyles() {
-    let unit, squareSize;
-    console.log('windowheight', window.innerHeight);
-    console.log('windowwidth', window.innerWidth);
-    if ((window.innerHeight > window.innerWidth) || (this.state.numCols > this.state.numRows)) {
-      unit = 'vw';
-      squareSize = Math.floor(70 / this.state.numCols);
-    } else {
-      unit = 'vh';
-      squareSize = Math.floor(70 / this.state.numRows);
-    }
-    squareSize = Math.max(squareSize, 23);
-    return {
-      width: `${this.state.numCols * squareSize}${unit}`,
-      height: `${this.state.numRows * squareSize}${unit}`,
-    };
-  }
-
-  gridDynamicStyles() {
-    return {
-      gridTemplateRows: `repeat(${this.state.numRows}, 1fr)`,
-      gridTemplateColumns: `repeat(${this.state.numCols}, 1fr)`,
-    }
-  }
-
-  renderSquare(row, col) {
-    const id = `r${row}c${col}`
-    const plot = this.state.grid[row][col];
-    return (
-      <SquareFootPlot
-        key={id}
-        id={id}
-        plant={plot.plant}
-        layout={plot.layout}
-        onClick={() => { this.handleGridClick(row, col) }}
-      />
-    );
-  }
-
   getGridCopy() {
     return this.state.grid.map(row => row.slice());
   }
@@ -162,13 +87,25 @@ class View extends React.Component {
     });
   }
 
-  delRow(rowNum) {
+  deleteRow(rowNumToDelete) {
     this.setState((state) => {
       return {
         numRows: state.numRows - 1,
-        grid: state.grid.splice(rowNum, 1),
+        grid: state.grid.map((row, rowNum) => (rowNum === rowNumToDelete) ? null : row.slice()).filter(Boolean),
       }
     });
+  }
+
+  deleteRowOptions() {
+    let options = [];
+    for (let i = 0 ; i < this.state.numRows ; i++ ) {
+      const option = {
+        name: String(i + 1),
+        handleSelect: this.deleteRow.bind(this, i)
+      };
+      options.push(option);
+    }
+    return options;
   }
 
   addCol() {
@@ -178,6 +115,27 @@ class View extends React.Component {
         grid: state.grid.map(row => row.slice().concat([new Plot()])),
       }
     })
+  }
+
+  deleteCol(colNumToDelete) {
+    this.setState((state) => {
+      return {
+        numCols: state.numCols - 1,
+        grid: state.grid.map(row => row.map((plot, colNum) => (colNum === colNumToDelete) ? null : plot).filter(Boolean))
+      }
+    });
+  }
+
+  deleteColOptions() {
+    let options = [];
+    for (let i = 0 ; i < this.state.numCols ; i++ ) {
+      const option = {
+        name: String(i + 1),
+        handleSelect: this.deleteCol.bind(this, i)
+      };
+      options.push(option);
+    }
+    return options;
   }
 
   handlePlantPickerSelection(plant, layout) {
@@ -233,12 +191,26 @@ class View extends React.Component {
       <Container fluid className="mt-2 p-1">
         {this.renderPlantPicker()}
         <Card className="h-75">
-          <Card.Header>{this.renderHeader()}</Card.Header>
+          <Card.Header>
+            <GardenControls
+              handleAddRow={this.addRow}
+              handleAddCol={this.addCol}
+              numRows={this.state.numRows}
+              numCols={this.state.numCols}
+              deleteRowOptions={this.deleteRowOptions()}
+              deleteColOptions={this.deleteColOptions()}
+            />
+          </Card.Header>
           <Card.Body
             className="align-content-center m-2 overflow-auto p-0"
             style={{ maxHeight: '70vh', overflowY: 'auto' }}
           >
-            {this.renderBody()}
+            <GardenGrid
+              grid={this.state.grid}
+              numRows={this.state.numRows}
+              numCols={this.state.numCols}
+              handleGridClick={this.handleGridClick}
+            />
           </Card.Body>
         </Card>
       </Container>

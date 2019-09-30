@@ -1,12 +1,10 @@
 import '../App.css';
-import '../index.css';
-import '../images/plants.css';
-import './SquareFootPlot.css';
+import '../css/plants.css';
+import '../css/SquareFootPlot.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Plant from '../models/Plant';
 import Layout from '../models/Layout';
-import plantImgSrc from '../images/plantImages';
 
 
 const propTypes = {
@@ -17,14 +15,9 @@ const propTypes = {
 };
 
 class SquareFootPlot extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   renderPlants() {
-    if (!(this.props.plant)) {
-      return null;
-    } else {
+    if (this.props.plant) {
       const gridCellStyle = (row, col) => {return {gridArea: `${row + 1} / ${col + 1} / auto / auto`}};
       return (
         this.props.layout.fill.map(([row, col], i) => {

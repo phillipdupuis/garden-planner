@@ -17,17 +17,6 @@ export default class Layout {
         width: '100%',
         height: '100%',
     };
-    // create an ordered list of [row, col] pairs for all the points in this layout.
-    let points = [];
-    for (let row = 0 ; row < resource.rows ; row++ ) {
-      for (let col = 0 ; col < resource.cols ; col++ ) {
-        points.push([row, col]);
-      }
-    }
-    this.allPoints = points;
-    // create a row-major ordered list of booleans indicating which points are filled
-    const filled = resource.fill.map(JSON.stringify);
-    this.cellFilledStates = points.map(p => (filled.includes(JSON.stringify(p))) ? true : false);
   }
 
   static getObject(id) {

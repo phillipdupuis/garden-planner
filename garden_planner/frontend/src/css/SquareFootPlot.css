@@ -8,7 +8,7 @@
   border: 3px solid #6D5720;
 }
 
-plot:focus {
+.plot:focus {
   outline: none;
 }
 
@@ -28,6 +28,5 @@ plot:focus {
 	width: 100%;
   height: 100%;
   background-position: center center;
-  /* may need to have background-size be a defined value */
   background-size: contain;
 }
