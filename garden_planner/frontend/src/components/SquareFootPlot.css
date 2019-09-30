@@ -1,0 +1,33 @@
+.plot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #836B32;
+  background-size: contain;
+  cursor: pointer;
+  border: 3px solid #6D5720;
+}
+
+plot:focus {
+  outline: none;
+}
+
+.plants {
+	z-index: 30;
+}
+
+.plant {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	padding: 5%;
+}
+
+.plant .bg {
+	width: 100%;
+  height: 100%;
+  background-position: center center;
+  /* may need to have background-size be a defined value */
+  background-size: contain;
+}
