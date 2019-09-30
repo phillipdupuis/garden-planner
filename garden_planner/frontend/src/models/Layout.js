@@ -11,6 +11,7 @@ export default class Layout {
         display: 'grid',
         gridTemplateRows: `repeat(${resource.rows}, 1fr)`,
         gridTemplateColumns: `repeat(${resource.cols}, 1fr)`,
+        position: 'absolute',
         top: 0,
         left: 0,
         width: '95%',

@@ -30,9 +30,10 @@ class SquareFootPlot extends React.Component {
             // const cellClass = (filled) ? `plant ${this.props.plant.className} bg-90pct-center` : 'bg-90pct-center';
             // return <div className={cellClass} key={i}></div>;
             if (filled) {
-              return <img src={imgSrc} className="plant" alt={this.props.plant.name} key={i}/>
+              // return <img src={imgSrc} className="plant" alt={this.props.plant.name} key={i}/>
+              return <div className="plant"><object data={imgSrc} type="image/svg+xml" key={i}></object></div>;
             } else {
-              return <div className="plant"></div>;
+              return <div className="plant" key={i}></div>;
             }
           })
       );
