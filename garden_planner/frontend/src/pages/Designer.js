@@ -1,26 +1,22 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
-import Modal from 'react-bootstrap/Modal';
-import { Navbar, Nav, Form, FormControl } from 'react-bootstrap';
-import ListGroup from 'react-bootstrap/ListGroup';
-import SplitButton from 'react-bootstrap/SplitButton';
 import PlantPicker from '../components/PlantPicker';
 import GardenGrid from '../components/GardenGrid';
 import GardenControls from '../components/GardenControls';
-import undoIcon from '../images/undo.svg';
-import redoIcon from '../images/redo.svg';
-import Header from '../components/Header.js';
 import Plant from '../models/Plant';
 import Layout from '../models/Layout';
 import Plot from '../models/Plot';
 
+
+// iteration helpers
 const range = (length) => [...Array(length).keys()];
+
+// grid helpers
+const createRow = (length) => new Array(length).fill().map(cell => new Plot());
+const createGrid = (numRows, numCols) => Array(numRows).fill().map(row => createRow(numCols));
+const cloneGrid = (grid) => grid.map(row => row.slice());
+
 
 class Designer extends React.Component {
   constructor(props) {
@@ -28,12 +24,12 @@ class Designer extends React.Component {
     this.state = {
       numRows: 4,
       numCols: 4,
-      grid: Array(4).fill().map(row => new Array(4).fill().map(col => new Plot())),
+      grid: createGrid(4, 4),
       showPlantPicker: false,
     };
+    this.handleGridClick = this.handleGridClick.bind(this);
     this.addRow = this.addRow.bind(this);
     this.addCol = this.addCol.bind(this);
-    this.handleGridClick = this.handleGridClick.bind(this);
     this.clickedRow = null;
     this.clickedCol = null;
     this.history = [];
@@ -44,28 +40,6 @@ class Designer extends React.Component {
     Layout.loadObjectsFromApi();
   }
 
-  renderUndo() {
-    if (this.history.length === 0) {
-      return <Button variant="outline-secondary" className="disabled" disabled><img src={undoIcon} /></Button>;
-    } else {
-      let undoFcn = () => { let g = this.history.pop(); console.log('yaboii', g); this.setState({ grid: g }) };
-      return <Button variant="outline-secondary" onClick={() => { this.undo() }}><img src={undoIcon} /></Button>;
-    }
-  }
-
-  undo() {
-    let g = this.history.pop();
-    this.setState((state) => {
-      return {
-        grid: g,
-      }
-    });
-  }
-
-  getGridCopy() {
-    return this.state.grid.map(row => row.slice());
-  }
-
   handleGridClick(row, col) {
     this.clickedRow = row;
     this.clickedCol = col;
@@ -73,14 +47,10 @@ class Designer extends React.Component {
   }
 
   addRow(index) {
-    const newNumRows = this.state.numRows + 1;
-    const newGrid = this.state.grid.map(row => row.slice());
-    const newRow = Array(this.state.numCols).fill().map(col => new Plot());
-    newGrid.splice(index, 0, newRow);
-    this.setState({
-      numRows: newNumRows,
-      grid: newGrid,
-    });
+    const numRows = this.state.numRows + 1;
+    const grid = cloneGrid(this.state.grid);
+    grid.splice(index, 0, createRow(this.state.numCols));
+    this.setState({ numRows: numRows, grid: grid });
   }
 
   addRowOptions() {
@@ -125,13 +95,10 @@ class Designer extends React.Component {
   }
 
   addCol(index) {
-    const newNumCols = this.state.numCols + 1;
-    const newGrid = this.state.grid.map(row => row.slice());
-    newGrid.forEach(row => row.splice(index, 0, new Plot()));
-    this.setState({
-      numCols: newNumCols,
-      grid: newGrid,
-    });
+    const numCols = this.state.numCols + 1;
+    const grid = cloneGrid(this.state.grid);
+    grid.forEach(row => row.splice(index, 0, new Plot()));
+    this.setState({ numCols: numCols, grid: grid });
   }
 
   addColOptions() {
@@ -176,49 +143,26 @@ class Designer extends React.Component {
   }
 
   handlePlantPickerSelection(plant, layout) {
-    const gridCopy = this.state.grid.map(row => row.slice());
-    const plot = gridCopy[this.clickedRow][this.clickedCol];
+    const grid = cloneGrid(this.state.grid);
+    const plot = grid[this.clickedRow][this.clickedCol];
     Object.assign(plot, { plant: plant, layout: layout });
     this.clickedRow = null;
     this.clickedCol = null;
-    this.setState({
-      grid: gridCopy,
-      showPlantPicker: false,
-    });
+    this.setState({ grid: grid, showPlantPicker: false });
   }
 
   renderPlantPicker() {
-    if (this.state.showPlantPicker === false) {
-      return null;
-    } else {
-      // Determine what plants are adjacent to the selected plot...this influences the search results.
-      const plotRow = this.clickedRow;
-      const plotCol = this.clickedCol;
-      const validLoc = (row, col) => (
-        row >= 0
-        && row < this.state.numRows
-        && col >= 0
-        && col < this.state.numCols
-        && `${row}_${col}` !== `${plotRow}_${plotCol}`
-      );
-      const getPlantAtLoc = (row, col) => this.state.grid[row][col].plant;
-      const neighborPlants = [];
-      [plotRow - 1, plotRow, plotRow + 1].forEach(row => {
-        [plotCol - 1, plotCol, plotCol + 1].forEach(col => {
-          if (validLoc(row, col) && getPlantAtLoc(row, col)) {
-            neighborPlants.push(getPlantAtLoc(row, col));
-          }
-        });
-      });
-      const plantGroups = this.state.grid[plotRow][plotCol].plantPickerOptionGroups(neighborPlants);
+    if (this.state.showPlantPicker) {
+      const row = this.clickedRow;
+      const col = this.clickedCol;
       return (
         <PlantPicker
           show={true}
           handleSelect={(plant, layout) => { this.handlePlantPickerSelection(plant, layout) }}
           handleHide={() => { this.setState({ showPlantPicker: false }) }}
-          plantGroups={plantGroups}
-          plot={this.state.grid[plotRow][plotCol]}
-          neighborPlants={neighborPlants}
+          plantGroups={Plot.plantPickerGroups(row, col, this.state.grid)}
+          plot={this.state.grid[row][col]}
+          neighbors={Plot.neighbors(row, col, this.state.grid)}
         />
       );
     }

@@ -8,7 +8,6 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import Modal from 'react-bootstrap/Modal';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Plot from '../models/Plot';
-import Plant from '../models/Plant';
 
 
 const propTypes = {
@@ -17,8 +16,8 @@ const propTypes = {
   handleHide: PropTypes.func.isRequired,
   plantGroups: PropTypes.object.isRequired,
   plot: PropTypes.instanceOf(Plot).isRequired,
-  neighborPlants: PropTypes.arrayOf(
-    PropTypes.instanceOf(Plant)
+  neighbors: PropTypes.arrayOf(
+    PropTypes.instanceOf(Plot)
   ).isRequired
 }
 
@@ -47,11 +46,11 @@ class PlantPicker extends React.Component {
   }
 
   renderNeighbors() {
-    if (this.props.neighborPlants.length > 0) {
-      const neighborNames = Array.from(new Set(this.props.neighborPlants.map(plant => plant.namePlural.toLowerCase()))).sort();
-      return (
-        <span className="text-wrap text-sm">Neighbors: {neighborNames.join(', ')}</span>
-      );
+    const neighborPlants = this.props.neighbors.map(plot => plot.plant).filter(Boolean);
+    if (neighborPlants.length > 0) {
+      const getName = (plant) => plant.namePlural.toLowerCase();
+      const names = Array.from(new Set(neighborPlants.map(getName))).sort().join(', ');
+      return <span className="text-wrap text-sm">Neighbors: {names}</span>;
     }
   }
 

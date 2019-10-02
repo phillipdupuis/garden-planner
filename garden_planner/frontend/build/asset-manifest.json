@@ -1,25 +1,23 @@
 {
   "files": {
-    "main.css": "/static/css/main.12b47c59.chunk.css",
-    "main.js": "/static/js/main.d0549172.chunk.js",
-    "main.js.map": "/static/js/main.d0549172.chunk.js.map",
+    "main.css": "/static/css/main.f898be6e.chunk.css",
+    "main.js": "/static/js/main.844a3b4b.chunk.js",
+    "main.js.map": "/static/js/main.844a3b4b.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.1dc4db23.js",
     "runtime-main.js.map": "/static/js/runtime-main.1dc4db23.js.map",
     "static/css/2.266e55a5.chunk.css": "/static/css/2.266e55a5.chunk.css",
-    "static/js/2.e42ede9f.chunk.js": "/static/js/2.e42ede9f.chunk.js",
-    "static/js/2.e42ede9f.chunk.js.map": "/static/js/2.e42ede9f.chunk.js.map",
+    "static/js/2.0fd7d7cc.chunk.js": "/static/js/2.0fd7d7cc.chunk.js",
+    "static/js/2.0fd7d7cc.chunk.js.map": "/static/js/2.0fd7d7cc.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.7c31c524baa3b54e880710f8f7de4003.js": "/precache-manifest.7c31c524baa3b54e880710f8f7de4003.js",
+    "precache-manifest.f2fe082572056381f1779d48780ab5c1.js": "/precache-manifest.f2fe082572056381f1779d48780ab5c1.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.266e55a5.chunk.css.map": "/static/css/2.266e55a5.chunk.css.map",
-    "static/css/main.12b47c59.chunk.css.map": "/static/css/main.12b47c59.chunk.css.map",
+    "static/css/main.f898be6e.chunk.css.map": "/static/css/main.f898be6e.chunk.css.map",
     "static/media/Penny_1.jpg": "/static/media/Penny_1.5831e7f0.jpg",
     "static/media/Penny_2.jpg": "/static/media/Penny_2.c0360f33.jpg",
     "static/media/Penny_3.jpg": "/static/media/Penny_3.5e036fdc.jpg",
     "static/media/Penny_4.jpg": "/static/media/Penny_4.ba0f8021.jpg",
     "static/media/Penny_5.jpg": "/static/media/Penny_5.825f553d.jpg",
-    "static/media/index.css": "/static/media/tomato.4826181a.svg",
-    "static/media/redo.svg": "/static/media/redo.d2107f44.svg",
-    "static/media/undo.svg": "/static/media/undo.42f85826.svg"
+    "static/media/index.css": "/static/media/tomato.4826181a.svg"
   }
 }

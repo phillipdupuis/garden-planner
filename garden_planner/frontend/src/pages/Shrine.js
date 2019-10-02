@@ -17,11 +17,11 @@ class Shrine extends React.Component {
         <Card.Header as="h5">Penny</Card.Header>
         <Card.Body className="bg-dark">
           <Carousel>
-            <Carousel.Item><img src={pennyPic3} /></Carousel.Item>
-            <Carousel.Item><img src={pennyPic4} /></Carousel.Item>
-            <Carousel.Item><img src={pennyPic1} /></Carousel.Item>
-            <Carousel.Item><img src={pennyPic2} /></Carousel.Item>
-            <Carousel.Item><img src={pennyPic5} /></Carousel.Item>
+            <Carousel.Item><img src={pennyPic3} alt="Penny pic #1" /></Carousel.Item>
+            <Carousel.Item><img src={pennyPic4} alt="Penny pic #2" /></Carousel.Item>
+            <Carousel.Item><img src={pennyPic1} alt="Penny pic #3" /></Carousel.Item>
+            <Carousel.Item><img src={pennyPic2} alt="Penny pic #4" /></Carousel.Item>
+            <Carousel.Item><img src={pennyPic5} alt="Penny pic #5" /></Carousel.Item>
           </Carousel>
         </Card.Body>
       </Card>

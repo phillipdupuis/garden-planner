@@ -22,7 +22,10 @@ const propTypes = {
 
 class GardenControls extends React.Component {
 
-  static renderDropdownButton(id, title, options) {
+  btnGroupContainerClass = 'd-flex flex-column m-1 p-0 border border-secondary rounded text-center text-nowrap';
+  btnGroupLabelClass = 'badge badge-secondary rounded-0 w-100';
+
+  renderDropdownButton(id, title, options) {
     return (
       <DropdownButton
         id={id}
@@ -31,34 +34,30 @@ class GardenControls extends React.Component {
         variant="outline-secondary"
         size="sm"
       >
-        {GardenControls.renderDropdownItems(options)}
+        {
+          options.map((option, i) => {
+            return <Dropdown.Item key={i} onSelect={option.handleSelect}>{option.label}</Dropdown.Item>;
+          })
+        }
       </DropdownButton>
-    );
-  }
-
-  static renderDropdownItems(options) {
-    return (
-      options.map((option, i) => {
-        return <Dropdown.Item key={i} onSelect={option.handleSelect}>{option.label}</Dropdown.Item>;
-      })
     );
   }
 
   render() {
     return (
       <ButtonToolbar aria-label="Controls" className="justify-content-center">
-        <div className="d-flex flex-column m-1 p-0 border border-secondary rounded text-center text-nowrap">
-          <span className="badge badge-secondary rounded-0 w-100">Rows</span>
+        <div className={this.btnGroupContainerClass}>
+          <span className={this.btnGroupLabelClass}>Rows</span>
           <ButtonGroup aria-label="Add or delete rows">
-            {GardenControls.renderDropdownButton('add-row-btn', 'Add', this.props.addRowOptions)}
-            {GardenControls.renderDropdownButton('delete-row-btn', 'Delete', this.props.deleteRowOptions)}
+            {this.renderDropdownButton('add-row-btn', 'Add', this.props.addRowOptions)}
+            {this.renderDropdownButton('delete-row-btn', 'Delete', this.props.deleteRowOptions)}
           </ButtonGroup>
         </div>
-        <div className="d-flex flex-column m-1 p-0 border border-secondary rounded text-center text-nowrap">
-          <span className="badge badge-secondary rounded-0 w-100">Columns</span>
+        <div className={this.btnGroupContainerClass}>
+          <span className={this.btnGroupLabelClass}>Columns</span>
           <ButtonGroup aria-label="Add or delete columns">
-            {GardenControls.renderDropdownButton('add-col-btn', 'Add', this.props.addColOptions)}
-            {GardenControls.renderDropdownButton('delete-col-btn', 'Delete', this.props.deleteColOptions)}
+            {this.renderDropdownButton('add-col-btn', 'Add', this.props.addColOptions)}
+            {this.renderDropdownButton('delete-col-btn', 'Delete', this.props.deleteColOptions)}
           </ButtonGroup>
         </div>
       </ButtonToolbar>

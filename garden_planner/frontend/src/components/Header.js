@@ -1,6 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Navbar, Nav } from 'react-bootstrap';
 import '../css/theme.css';
+
+
+const propTypes = {
+  pages: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired
+    })
+  ).isRequired,
+  currentPageId: PropTypes.string.isRequired,
+  handleSelectPage: PropTypes.func.isRequired
+};
+
 
 class Header extends React.Component {
   render() {
@@ -30,5 +44,7 @@ class Header extends React.Component {
     );
   }
 }
+
+Header.propTypes = propTypes;
 
 export default Header;
