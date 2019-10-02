@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import Designer from './pages/Designer';
 import About from './pages/About';
@@ -7,53 +8,32 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentPageId: 'designer',
-    };
-    const page = (id, label) => ({id: id, label: label});
-    this.pages = [
-      page('designer', 'Garden Planner'),
-      page('about', 'About'),
-      page('shrine', 'The Shrine'),
-    ];
-    this.handleSelectPage = this.handleSelectPage.bind(this);
-  }
+function PageNotFound() {
+  return <p>Page not found.</p>;
+}
 
-  handleSelectPage(pageId) {
-    this.setState((state) => {
-      return {
-        currentPageId: pageId
-      }
-    });
-  }
-
-  renderBody() {
-    if (this.state.currentPageId === 'designer') {
-      return <Designer />;
-    } else if (this.state.currentPageId === 'about') {
-      return <About />;
-    } else if (this.state.currentPageId === 'shrine') {
-      return <Shrine />;
-    } else {
-      return <p>No clue</p>;
-    }
-  }
-
-  render() {
-    return (
-      <div className="App">
+function App() {
+  const navItem = (path, name) => ({ path: path, name: name });
+  return (
+    <BrowserRouter>
+      <div className="app">
         <Header
-          pages={this.pages}
-          currentPageId={this.state.currentPageId}
-          handleSelectPage={this.handleSelectPage}
+          defaultPath={'/'}
+          navItems={[
+            navItem('/', 'Garden Designer'),
+            navItem('/about', 'About'),
+            navItem('/shrine', 'Shrine')
+            ]}
         />
-        {this.renderBody()}
+        <Switch>
+          <Route exact path="/" component={Designer} />
+          <Route path="/about" component={About} />
+          <Route path="/shrine" component={Shrine} />
+          <Route component={PageNotFound} />
+        </Switch>
       </div>
-    );
-  }
+    </BrowserRouter>
+  );
 }
 
 export default App;

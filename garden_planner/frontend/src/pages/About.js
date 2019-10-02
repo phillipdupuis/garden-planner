@@ -1,5 +1,7 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
+import Jumbotron from 'react-bootstrap/Jumbotron';
+import Button from 'react-bootstrap/Button';
 
 
 function FlatIconCredit({ authorLink, authorTitle, authorLabel }) {
@@ -13,10 +15,21 @@ function FlatIconCredit({ authorLink, authorTitle, authorLabel }) {
   );
 }
 
+
 class About extends React.Component {
   render() {
     return (
+    <div class="text-sm">
+      <Jumbotron>
+        <h5>Design your own garden</h5>
+        <p>
+          Personalize the size and dimensions, plan out the plants, and get 
+          assistance with determining what arrangements work well.
+        </p>
+        <Button variant="success" href="/">Go to Garden Planner</Button>
+      </Jumbotron>
       <Container>
+        {/* <div className="my-3 p-3 bg-white rounded shadow-sm"></div> */}
         <h1 className="mt-5">
           About Penny's Garden Planner
         </h1>
@@ -47,6 +60,7 @@ class About extends React.Component {
           />
         </div>
       </Container>
+    </div>
     );
   }
 }

@@ -1,41 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import '../css/theme.css';
 
 
 const propTypes = {
-  pages: PropTypes.arrayOf(
+  defaultPath: PropTypes.string.isRequired,
+  navItems: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired
+      path: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired
     })
-  ).isRequired,
-  currentPageId: PropTypes.string.isRequired,
-  handleSelectPage: PropTypes.func.isRequired
+  ).isRequired
 };
-
 
 class Header extends React.Component {
   render() {
     return (
       <Navbar collapseOnSelect expand="md" className="bg-pastel-green">
-        <Navbar.Brand
-          as={Nav.Link}
-          onClick={() => this.props.handleSelectPage('designer')}
-        >
+        <Navbar.Brand href={this.props.defaultPath}>
           Penny's Garden Planner
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-actions" />
         <Navbar.Collapse id="navbar-actions">
-          <Nav
-            className="mr-auto"
-            activeKey={this.props.currentPageId}
-            onSelect={selectedKey => this.props.handleSelectPage(selectedKey)}
-          >
+          <Nav className="mr-auto" activeKey={this.props.location.pathname}>
             {
-              this.props.pages.map(page => {
-                return <Nav.Link eventKey={page.id} key={page.id}>{page.label}</Nav.Link>;
+              this.props.navItems.map(item => {
+                return (
+                  <Nav.Item key={item.name}>
+                    <Nav.Link href={item.path}>{item.name}</Nav.Link>
+                  </Nav.Item>
+                );
               })
             }
           </Nav>
@@ -47,4 +43,4 @@ class Header extends React.Component {
 
 Header.propTypes = propTypes;
 
-export default Header;
+export default withRouter(Header);
