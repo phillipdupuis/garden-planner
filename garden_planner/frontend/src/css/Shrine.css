@@ -1,0 +1,8 @@
+.carousel-inner > .carousel-item > img {
+  margin: 0 auto;
+}
+
+img {
+  width: 100%;
+  max-width: 1200px;
+}

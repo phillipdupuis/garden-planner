@@ -20,7 +20,7 @@ export default class Layout {
   }
 
   static getObject(id) {
-    return layoutObjects.find(layout => layout.id == id);
+    return layoutObjects.find(layout => layout.id === id);
   }
 
   static allObjects() {

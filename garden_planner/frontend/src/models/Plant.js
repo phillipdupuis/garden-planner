@@ -18,7 +18,7 @@ export default class Plant {
   }
 
   static getObject(id) {
-    return plantObjects.find(plant => plant.id == id);
+    return plantObjects.find(plant => plant.id === id);
   }
 
   static allObjects() {

@@ -1,4 +1,5 @@
-import '../App.css';
+import '../css/theme.css';
+import '../css/plants.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
@@ -6,10 +7,8 @@ import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Modal from 'react-bootstrap/Modal';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
+import Plot from '../models/Plot';
 import Plant from '../models/Plant';
-import Layout from '../models/Layout';
 
 
 const propTypes = {
@@ -17,6 +16,7 @@ const propTypes = {
   handleSelect: PropTypes.func.isRequired,
   handleHide: PropTypes.func.isRequired,
   plantGroups: PropTypes.object.isRequired,
+  plot: PropTypes.instanceOf(Plot).isRequired,
   neighborPlants: PropTypes.arrayOf(
     PropTypes.instanceOf(Plant)
   ).isRequired
@@ -29,6 +29,72 @@ class PlantPicker extends React.Component {
     this.state = {
       currentPlantGroup: Object.keys(props.plantGroups)[0],
     };
+  }
+
+  renderClearPlotButton() {
+    if (this.props.plot.plant) {
+      return (
+        <Button
+          block
+          variant="success"
+          className="mb-1"
+          onClick={() => this.props.handleSelect(null, null)}
+        >
+          <span>Clear plot</span>
+        </Button>
+      );
+    }
+  }
+
+  renderNeighbors() {
+    if (this.props.neighborPlants.length > 0) {
+      const neighborNames = Array.from(new Set(this.props.neighborPlants.map(plant => plant.namePlural.toLowerCase()))).sort();
+      return (
+        <span className="text-wrap text-sm">Neighbors: {neighborNames.join(', ')}</span>
+      );
+    }
+  }
+
+  renderFilters() {
+    const numGroups = Object.keys(this.props.plantGroups).length;
+    if (numGroups > 1) {
+      const groupNameMap = {
+        all: 'All',
+        good: 'Compatible',
+        neutral: 'Neutral',
+        bad: 'Combative'
+      };
+      const buttonStyle = {
+        width: `${Math.floor(96 / numGroups)}%`
+      };
+      return (
+        <div className="mb-2">
+          <ToggleButtonGroup
+            type="radio"
+            name="currentPlantGroupFilter"
+            value={this.state.currentPlantGroup}
+            onChange={(value) => { this.setState({ currentPlantGroup: value }) }}
+            className="bg-light w-100"
+          >
+            {Object.entries(this.props.plantGroups).map(([group, plantList]) => {
+              return (
+                <ToggleButton
+                  size="sm"
+                  className="text-center"
+                  variant="outline-success"
+                  value={group}
+                  key={group}
+                  style={buttonStyle}
+                >
+                  {groupNameMap[group]}
+                </ToggleButton>
+              )
+            })
+            }
+          </ToggleButtonGroup>
+        </div>
+      )
+    }
   }
 
   renderPlantList() {
@@ -45,46 +111,15 @@ class PlantPicker extends React.Component {
                 key={plant.id}
                 onClick={() => this.props.handleSelect(plant, plant.defaultLayout())}
               >
-                <div className={`${plant.className} bg-icon-right`}>{plant.namePlural}</div>
+                <span>
+                  {plant.namePlural}
+                  <div className={`${plant.className} icon float-right`}></div>
+                </span>
               </ListGroup.Item>
             )
           })}
       </ListGroup>
     )
-  }
-
-  renderFilters() {
-    if (Object.keys(this.props.plantGroups).length === 1) {
-      return null;
-    } else {
-      const groupNameMap = {all: 'All', good: 'Good with neighbors', neutral: 'Neutral', bad: 'Bad with neighbors'};
-      return (
-        <div className="mb-2">
-          <ToggleButtonGroup
-            type="radio"
-            name="currentPlantGroupFilter"
-            value={this.state.currentPlantGroup}
-            onChange={(value) => { this.setState({ currentPlantGroup: value }) }}
-            className="bg-light"
-          >
-            {Object.entries(this.props.plantGroups).map(([group, plantList]) => {
-              return (
-                <ToggleButton
-                  size="sm"
-                  className="text-left"
-                  variant="outline-secondary"
-                  value={group}
-                  key={group}
-                >
-                  {groupNameMap[group]}
-                </ToggleButton>
-              )
-            })
-            }
-          </ToggleButtonGroup>
-        </div>
-      )
-    }
   }
 
   render() {
@@ -98,6 +133,9 @@ class PlantPicker extends React.Component {
           Plant Picker
         </Modal.Header>
         <Modal.Body>
+          {this.renderClearPlotButton()}
+          {(this.props.plot.plant) ? <hr /> : null}
+          {this.renderNeighbors()}
           {this.renderFilters()}
           {this.renderPlantList()}
         </Modal.Body>

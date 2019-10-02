@@ -1,73 +1,59 @@
 import React from 'react';
-import logo from './logo.svg';
-import Header from './components/Header.js';
-import View from './index.js';
-import ListGroup from 'react-bootstrap/ListGroup';
+import Header from './components/Header';
+import Designer from './pages/Designer';
+import About from './pages/About';
+import Shrine from './pages/Shrine';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentPageId: 'designer',
+    };
+    const page = (id, label) => ({id: id, label: label});
+    this.pages = [
+      page('designer', 'Garden Planner'),
+      page('about', 'About'),
+      page('shrine', 'The Shrine'),
+    ];
+    this.handleSelectPage = this.handleSelectPage.bind(this);
+  }
 
-// class Thingy extends React.Component {
+  handleSelectPage(pageId) {
+    this.setState((state) => {
+      return {
+        currentPageId: pageId
+      }
+    });
+  }
 
-//     state = {
-//         data: '',
-//         loaded: false,
-//         placeholder: "Loading..."
-//     };
+  renderBody() {
+    if (this.state.currentPageId === 'designer') {
+      return <Designer />;
+    } else if (this.state.currentPageId === 'about') {
+      return <About />;
+    } else if (this.state.currentPageId === 'shrine') {
+      return <Shrine />;
+    } else {
+      return <p>No clue</p>;
+    }
+  }
 
-//     componentDidMount() {
-//         fetch('/backend/plants/')
-//             .then(response => {
-//                 if (response.status !== 200) {
-//                     return this.setState({ placeholder: "Something went wrong" });
-//                 } else {
-//                     return response.json();
-//                 }
-//             })
-//             .then(data => this.setState({ data: data, loaded: true }));
-//     }
-
-//     renderOne(plant) {
-//       return (
-//         <ListGroup.Item
-//           key={plant.id}
-//         >
-//         {plant.name}
-//         </ListGroup.Item>
-//       );
-//     }
-
-//     render() {
-//         const { data, loaded, placeholder } = this.state;
-//         if (!loaded) {
-//           return <p>{placeholder}</p>;
-//         } else {
-//           return (
-//             <ListGroup>
-//               {this.state.data.map(plant => this.renderOne(plant))}
-//             </ListGroup>
-//           );
-//         }
-//     }
-// }
-
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <View />
-//     </div>
-//   );
-// }
-
-function App() {
-  return (
-    <div>
-      <Header />
-      <View />
-    </div>
-  );
+  render() {
+    return (
+      <div className="App">
+        <Header
+          pages={this.pages}
+          currentPageId={this.state.currentPageId}
+          handleSelectPage={this.handleSelectPage}
+        />
+        {this.renderBody()}
+      </div>
+    );
+  }
 }
 
 export default App;
