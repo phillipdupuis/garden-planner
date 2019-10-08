@@ -1,64 +1,33 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
-import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
 
 
-function FlatIconCredit({ authorLink, authorTitle, authorLabel }) {
-  return (
-    <div>
-      {'Icons made by '}
-      <a href={authorLink} title={authorTitle}>{authorLabel}</a>
-      {' from '}
-      <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
-    </div>
-  );
-}
-
-
 class About extends React.Component {
+
   render() {
     return (
-    <div class="text-sm">
-      <Jumbotron>
-        <h5>Design your own garden</h5>
+    <div>
+      <Container className="mt-4">
+        <h4>Design your own garden!</h4>
+        <hr className="my-4" />
         <p>
-          Personalize the size and dimensions, plan out the plants, and get 
-          assistance with determining what arrangements work well.
+          Square-foot gardening is a fun and effective way to grow your own food.  
+          It's highly efficient and requires very little space, making it ideal for people who live in urban environments or who have limited mobility.  
+          However, it can be difficult for many people to get past the planning phase.
         </p>
-        <Button variant="success" href="/">Go to Garden Planner</Button>
-      </Jumbotron>
-      <Container>
-        {/* <div className="my-3 p-3 bg-white rounded shadow-sm"></div> */}
-        <h1 className="mt-5">
-          About Penny's Garden Planner
-        </h1>
         <p>
-          Placeholder...fill this in later.
+          Our interactive garden designer is here to help.
+          It handles the hard parts for you, like determining seed/seedling arrangements or picking out companion plants.
         </p>
-        <p>Credit...</p>
-        <div className="d-flex flex-column">
-          <FlatIconCredit
-            authorLabel="Smashicons"
-            authorTitle="Smashicons"
-            authorLink="https://www.flaticon.com/authors/smashicons"
-          />
-          <FlatIconCredit
-            authorLabel="Freepik"
-            authorTitle="Freepik"
-            authorLink="https://www.flaticon.com/authors/freepik"
-          />
-          <FlatIconCredit
-            authorLabel="wanicon"
-            authorTitle="wanicon"
-            authorLink="https://www.flaticon.com/authors/wanicon"
-          />
-          <FlatIconCredit
-            authorLabel="mynamepong"
-            authorTitle="mynamepong"
-            authorLink="https://www.flaticon.com/authors/mynamepong"
-          />
-        </div>
+        <Button variant="success" href="/">Go to Garden Designer</Button>
+        <hr className="my-4" />
+        <h6>Learn more about square-foot gardening</h6>
+        <ul>
+          <li><a href="https://extension.umaine.edu/publications/2761e/">University of Maine - Gardening in Small Spaces</a></li>
+          <li><a href="https://www.ag.ndsu.edu/publications/lawns-gardens-trees/the-facts-of-square-foot-gardening">North Dakota State University</a></li>
+          <li><a href="https://hgic.clemson.edu/square-foot-gardening/">Clemson Home and Garden Information Center</a></li>
+        </ul>
       </Container>
     </div>
     );

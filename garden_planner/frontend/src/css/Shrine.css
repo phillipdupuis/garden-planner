@@ -1,8 +1,12 @@
-.carousel-inner > .carousel-item > img {
-  margin: 0 auto;
+
+.shrine-header {
+  width: 100%;
+  background-color: #e9ecef;
+  text-align: center;
+  justify-content: center;
 }
 
-img {
+.penny-pic {
   width: 100%;
-  max-width: 1200px;
+  max-width: 600px;
 }
