@@ -8,3 +8,19 @@ Square-foot gardening is a fun and effective way to grow your own food.  It's hi
 * Django
 * Django REST Framework (backend)
 * React (frontend)
+
+### Examples/Screenshots
+Mobile device<br>
+![mobile device screenshot](https://github.com/phillipdupuis/garden-planner/blob/master/garden_planner/frontend/src/screenshots/layout_mobile.png)
+<br>
+
+Selecting plants<br>
+![mobile device selecting plant](https://github.com/phillipdupuis/garden-planner/blob/master/garden_planner/frontend/src/screenshots/plant_picker.png)
+<br>
+
+Responsively resizing to display different layouts<br>
+![mobile device many plants](https://github.com/phillipdupuis/garden-planner/blob/master/garden_planner/frontend/src/screenshots/layout_mobile_large_garden.png)
+<br>
+
+Large screen<br>
+![large screen device screenshot](https://github.com/phillipdupuis/garden-planner/blob/master/garden_planner/frontend/src/screenshots/large_screen_layout.png)
