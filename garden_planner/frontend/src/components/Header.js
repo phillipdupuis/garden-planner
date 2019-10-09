@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import '../css/theme.css';
+import githubIcon from '../images/mark-github.svg';
 
 
 const propTypes = {
@@ -14,6 +15,26 @@ const propTypes = {
     })
   ).isRequired
 };
+
+const GithubLink = () => {
+  return (
+    <a
+      target="_blank"
+      href="https://github.com/phillipdupuis/garden-planner"
+      data-toggle="tooltip"
+      data-placement="left"
+      title="Github"
+    >
+      <img
+        src={githubIcon}
+        alt="Github"
+        width="24"
+        height="24"
+        className="d-none d-sm-none d-md-block" 
+      />
+    </a>
+  );
+}
 
 class Header extends React.Component {
   render() {
@@ -35,6 +56,7 @@ class Header extends React.Component {
               })
             }
           </Nav>
+          <GithubLink />
         </Navbar.Collapse>
       </Navbar>
     );
