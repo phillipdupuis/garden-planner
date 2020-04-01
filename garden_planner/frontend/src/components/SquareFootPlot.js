@@ -19,7 +19,7 @@ class SquareFootPlot extends React.Component {
   renderPlants() {
     if (this.props.plant) {
       const plantClass = `bg ${this.props.plant.className}`;
-      const gridCellStyle = (row, col) => {return {gridArea: `${row + 1} / ${col + 1} / auto / auto`}};
+      const gridCellStyle = (row, col) => ({gridArea: `${row + 1} / ${col + 1} / auto / auto`});
       return (
         this.props.layout.fill.map(([row, col], i) => {
           return (

@@ -19,10 +19,9 @@ const propTypes = {
   neighbors: PropTypes.arrayOf(
     PropTypes.instanceOf(Plot)
   ).isRequired
-}
+};
 
 class PlantPicker extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {

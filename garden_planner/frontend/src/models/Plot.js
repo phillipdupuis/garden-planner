@@ -17,7 +17,7 @@ class Plot {
       col >= 0 &&
       col < numCols &&
       `${row}_${col}` !== `${plotRow}_${plotCol}`
-      );
+    );
     const neighborPlots = [];
     [plotRow - 1, plotRow, plotRow + 1].forEach(row => {
       [plotCol - 1, plotCol, plotCol + 1].forEach(col => {
@@ -58,21 +58,21 @@ class Plot {
         });
       });
     }
-    
+
     // And finally, create a group for each non-empty set
     [
-    ['good', goodIds],
-    ['neutral', neutralIds],
-    ['bad', badIds]
+      ['good', goodIds],
+      ['neutral', neutralIds],
+      ['bad', badIds]
     ].forEach(
       ([name, idSet]) => {
         if (idSet.size > 0) {
           groups[name] = Array.from(idSet).map(id => Plant.getObject(id));
         }
       }
-      );
+    );
     return groups;
   }
 }
 
-  export default Plot;
+export default Plot;

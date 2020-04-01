@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, ButtonGroup, Button } from 'react-bootstrap';
 import '../css/theme.css';
 import githubIcon from '../images/mark-github.svg';
 
@@ -12,6 +12,12 @@ const propTypes = {
     PropTypes.shape({
       path: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired
+    })
+  ).isRequired,
+  navButtons: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      handleClick: PropTypes.func.isRequired
     })
   ).isRequired
 };
@@ -30,9 +36,21 @@ const GithubLink = () => {
         alt="Github"
         width="24"
         height="24"
-        className="d-none d-sm-none d-md-block" 
+        className="d-none d-sm-none d-md-block"
       />
     </a>
+  );
+}
+
+const NavButton = ({ label, handleClick }) => {
+  return (
+    <Button
+      as={Nav.Link}
+      variant="link"
+      onClick={handleClick}
+    >
+      <span className="float-left">{label}</span>
+    </Button>
   );
 }
 
@@ -46,15 +64,22 @@ class Header extends React.Component {
         <Navbar.Toggle aria-controls="navbar-actions" />
         <Navbar.Collapse id="navbar-actions">
           <Nav className="mr-auto" activeKey={this.props.location.pathname}>
-            {
-              this.props.navItems.map(item => {
-                return (
-                  <Nav.Item key={item.name}>
-                    <Nav.Link href={item.path}>{item.name}</Nav.Link>
-                  </Nav.Item>
-                );
-              })
-            }
+            {this.props.navItems.map(item => {
+              return (
+                <Nav.Item key={item.name}>
+                  <Nav.Link href={item.path}>{item.name}</Nav.Link>
+                </Nav.Item>
+              );
+            })}
+            {this.props.navButtons.map(button => {
+              return (
+                <NavButton
+                  key={button.name}
+                  label={button.name}
+                  handleClick={button.handleClick}
+                />
+              );
+            })}
           </Nav>
           <GithubLink />
         </Navbar.Collapse>

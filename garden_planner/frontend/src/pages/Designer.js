@@ -125,7 +125,7 @@ class Designer extends React.Component {
     this.setState((state) => {
       return {
         numCols: state.numCols - 1,
-        grid: state.grid.map(row => row.map((plot, colNum) => (colNum === index) ? null : plot).filter(Boolean))
+        grid: state.grid.map(row => row.map((plot, colNum) => (colNum === index) ? null : plot).filter(Boolean)),
       }
     });
   }

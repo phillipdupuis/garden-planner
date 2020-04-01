@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 import json
 
 
@@ -40,3 +41,40 @@ class Plant(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Garden(models.Model):
+    name = models.CharField(max_length=100)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        default=None,
+    )
+    last_edited_at = models.DateTimeField(auto_now=True)
+
+
+class Plot(models.Model):
+    row = models.PositiveSmallIntegerField('row')
+    col = models.PositiveSmallIntegerField('column')
+    # planting_date -- add this in the future
+    garden = models.ForeignKey(
+        Garden,
+        on_delete=models.CASCADE,
+        related_name='plots',
+        related_query_name='plot',
+    )
+    plant = models.ForeignKey(
+        Plant,
+        on_delete=models.CASCADE,
+        related_name='plots',
+        null=True,
+        blank=True,
+    )
+    layout = models.ForeignKey(
+        SquareFootLayout,
+        on_delete=models.CASCADE,
+        related_name='plots',
+        null=True,
+        blank=True,
+    )
